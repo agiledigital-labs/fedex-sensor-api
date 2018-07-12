@@ -18,14 +18,14 @@ function toInfluxTime(isoDateString) {
 /* GET users listing. */
 router.get('/', function(req, res, next) {
 
-  const deviceName = req.query.deviceName;
+  const deviceId = req.query.deviceId;
   const from = req.query.from;
   const to = req.query.to;
 
   const whereClauses = [`"domain"='binary_sensor'`];
 
-  if (!stringIsDefined(deviceName)) {
-    return next(new Error("deviceName is required!"));
+  if (!stringIsDefined(deviceId)) {
+    return next(new Error("deviceId is required!"));
   }
   if (stringIsDefined(from)) {
     whereClauses.push(`time > '${toInfluxTime(from)}'`);
@@ -36,7 +36,7 @@ router.get('/', function(req, res, next) {
 
   influx.query(`
     SELECT mean("value") AS "mean_value" 
-    FROM "home_assistant"."autogen".${Influx.escape.quoted(deviceName)}
+    FROM "home_assistant"."autogen".${Influx.escape.quoted(deviceId)}
     WHERE ${whereClauses.join(" AND ")}
   `)
   .then(function(result) {

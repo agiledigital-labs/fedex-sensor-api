@@ -14,7 +14,7 @@ const unitMappings = require('../utils/unit-mapping');
 // right now so this will do. 
 function magicalEnhancmentFunction(nameObj) {
 
-  const {friendlyName, deviceID} = nameObj;
+  const {friendlyName, deviceId} = nameObj;
 
   const invalidDevice = (friendlyName) => ({
     room: "Invalid Room",
@@ -22,7 +22,7 @@ function magicalEnhancmentFunction(nameObj) {
     unit: "Invalid Unit",
     friendly_name: friendlyName,
     sensor_id: "invalid_id",
-    deviceID: "device_id"
+    deviceId: "device_id"
   });
 
   if (typeof friendlyName != 'string') {
@@ -43,7 +43,7 @@ function magicalEnhancmentFunction(nameObj) {
     sensor_type: friendlySensorType,
     unit: unit,
     friendly_name: friendlyName,
-    deviceID: deviceID
+    deviceId: deviceId
   };
 }
 
