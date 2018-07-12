@@ -2,7 +2,6 @@ const express = require('express');
 const Influx = require('influx');
 const influx = require('../db/influx');
 const router = express.Router();
-const reducerFns = require('../utils/reducer-functions');
 
 function stringIsDefined(val) {
   return typeof val === "string" && val.length > 0;
@@ -16,17 +15,17 @@ function toInfluxTime(isoDateString) {
   return Influx.toNanoDate(nanoTimeString).toNanoISOString();
 }
 
+/* GET users listing. */
 router.get('/', function(req, res, next) {
 
   const deviceName = req.query.deviceName;
   const from = req.query.from;
   const to = req.query.to;
-  const type = req.query.type;
 
-  const whereClauses = [`"domain"='sensor'`];
+  const whereClauses = [`"domain"='binary_sensor'`];
 
-  if (stringIsDefined(deviceName)) {
-    whereClauses.push(`"friendly_name_str"=${Influx.escape.stringLit(deviceName)}`);
+  if (!stringIsDefined(deviceName)) {
+    return next(new Error("deviceName is required!"));
   }
   if (stringIsDefined(from)) {
     whereClauses.push(`time > '${toInfluxTime(from)}'`);
@@ -36,14 +35,13 @@ router.get('/', function(req, res, next) {
   }
 
   influx.query(`
-    SELECT value, friendly_name_str
-    FROM "home_assistant"."autogen"."°C"
+    SELECT mean("value") AS "mean_value" 
+    FROM "home_assistant"."autogen".${Influx.escape.quoted(deviceName)}
     WHERE ${whereClauses.join(" AND ")}
   `)
-  .then(function(results) {
-      const reducerFn = reducerFns[type] || reducerFns.list;
+  .then(function(result) {
       res.send({ 
-        result: reducerFn(results)
+        result: result[0].mean_value
       });
     })
     .catch(err => {

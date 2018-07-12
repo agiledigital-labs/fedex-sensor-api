@@ -57,6 +57,8 @@ will do until we can get more metadata from the sensors.
 
 ### GET /temperature
 
+Gets data from the temperature sensors in various formats.
+
 #### Query Parameters
 
 ##### deviceName (optional)
@@ -91,6 +93,33 @@ When the `type` query parameter is 'list' or undefined
 		{"time":"2018-07-12T02:13:57.000Z","value":20.9},
 		...
 	]
+}
+```
+
+### GET /busyness
+
+Gets the "busyness" index for a time period.
+
+This is an abitrary value that can be used to see how busy a room was during a time period.
+
+#### Query Parameters
+
+##### deviceId (mandatory)
+The ID of the device to filter by (e.g. 'binary_sensor.br_motion_5').
+##### from (optional)
+ISO 8601 date that sets the minimum date/time for an event to be returned.
+##### to  (optional)
+ISO 8601 date that sets the maximum date/time for an event to be returned.
+
+#### Example Query
+
+`/busyness?from=2018-07-12T02:03:19%2B00:00&to=2018-07-12T04:03:19%2B00:00&deviceId=binary_sensor.br_motion_5`
+
+#### Example Response
+
+```
+{
+	"result": 20.3333
 }
 ```
 

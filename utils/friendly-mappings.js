@@ -9,4 +9,4 @@ module.exports = {
   'motion': 'Motion Sensor',
   'uv': 'Ultra Violet Sensor',
   'light': 'Light Sensor'
-}
+};
