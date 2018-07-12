@@ -2,33 +2,11 @@ const express = require('express');
 const Influx = require('influx');
 const influx = require('../db/influx');
 const router = express.Router();
+const reducerFns = require('../utils/reducer-functions');
 
 function stringIsDefined(val) {
   return typeof val === "string" && val.length > 0;
 }
-
-/*
-time  "2018-07-12T01:54:21.006Z"
-value 22.6
-*/
-
-const reducerFns = {
-  'average': function(seriesData) {
-    const values = seriesData.map((val) => val.value);
-    return values.reduce((prev, curr) => prev + curr, 0) / values.length;
-  },
-  'min': function(seriesData) {
-    const values = seriesData.map((val) => val.value);
-    return Math.min(...values);
-  },
-  'max': function(seriesData) {
-    const values = seriesData.map((val) => val.value);
-    return Math.max(...values);
-  },
-  'list': function(seriesData) {
-    return seriesData;
-  }
-};
 
 // TODO: Work out more elegant way to do this
 // See: https://node-influx.github.io/manual/usage.html#a-moment-for-times
