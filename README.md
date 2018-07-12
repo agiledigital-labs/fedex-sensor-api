@@ -7,7 +7,24 @@ Quick and dirty API to take data that was dumped by [home-assistant](https://www
 
 ## Endpoints
 
-### /temperature
+### GET /devices
+
+Returns a list of devices that you can use to filter by in GET /temperature.
+
+#### Example Response
+
+```
+{
+	"result":[
+		"Temperature Sensor 1",
+		"Temperature Sensor",
+		"BR Temp",
+		"K Temp"
+	]
+}
+```
+
+### GET /temperature
 
 #### Query Parameters
 
