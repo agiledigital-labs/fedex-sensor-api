@@ -21,7 +21,6 @@ function magicalEnhancmentFunction(nameObj) {
     sensor_type: "Invalid Sensor",
     unit: "Invalid Unit",
     friendly_name: friendlyName,
-    sensor_id: "invalid_id",
     deviceId: "device_id"
   });
 
@@ -63,7 +62,7 @@ router.get('/', function(req, res, next) {
           `)
           .then((friendlyNameResult) => ({
               friendlyName: friendlyNameResult[0].distinct,
-              deviceID: name
+              deviceId: name
           }));
         });
       return Promise.all(queries)
@@ -75,7 +74,7 @@ router.get('/', function(req, res, next) {
       `)
       .then((tempResults) => motionResults.concat(tempResults.map(result => ({
         friendlyName: result.distinct,
-        deviceID: ''
+        deviceId: ''
       }))))
     })
     .then((concatinatedResults) => {

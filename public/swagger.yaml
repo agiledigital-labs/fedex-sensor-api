@@ -1,0 +1,147 @@
+swagger: "2.0"
+info:
+  description: |
+    Fedex project interface to gather sensor data
+  
+    Quick and dirty API to take data that was dumped by home-assistant into an InfluxDB database and filter them for consumption by other services for Fedex day
+  version: "1.0.0"
+  title: "Fedex Sensor Data"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "sean.dawson@agiledigital.com.au"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "fedex-sensor-api.staging.agiledigital.co"
+basePath: "/"
+schemes:
+- "https"
+paths:
+  /devices:
+    get:
+      summary: "Returns device information that can be used to filter other queries."
+      description: ""
+      operationId: "getDevices"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/DeviceResponse"
+      produces:
+      - "application/json"
+  /temperature:
+    get:
+      summary: "Query temperature sensor data"
+      description: ""
+      operationId: "getTemperature"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "deviceName"
+        in: "query"
+        description: "The name of the device to filter by"
+        required: false
+        type: "string"
+      - name: "type"
+        in: "query"
+        description: "The type of response to return"
+        required: false
+        type: "string"
+        enum: ['average', 'min', 'max', 'list']
+      - name: "from"
+        in: "query"
+        description: "The minimum date to include in the response"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "to"
+        in: "query"
+        description: "The minimum date to include in the response"
+        required: false
+        type: "string"
+        format: "date-time"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            oneOf:
+              -  $ref: "#/definitions/TemperatureAggregrateResponse"
+              -  $ref: "#/definitions/TemperatureListResponse"
+           
+  /busyness:
+    get:
+      summary: "Query motion sensor data"
+      description: ""
+      operationId: "getBusyness"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "deviceId"
+        in: "query"
+        description: "The ID of the device to filter by"
+        required: false
+        type: "string"
+      - name: "from"
+        in: "query"
+        description: "The minimum date to include in the response"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "to"
+        in: "query"
+        description: "The minimum date to include in the response"
+        required: false
+        type: "string"
+        format: "date-time"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/BusynessResponse"
+definitions:
+  DeviceResponse:
+    type: "object"
+    properties:
+      result:
+        type: array
+        items:
+          type: object
+          properties:
+            room: 
+              type: string
+            sensor_type: 
+              type: string
+            unit: 
+              type: string
+            friendly_name: 
+              type: string
+            deviceId: 
+              type: string
+  TemperatureAggregrateResponse:
+    type: "object"
+    properties:
+      result:
+        type: "number"
+        format: "int64"
+  TemperatureListResponse:
+    type: "object"
+    properties:
+      result:
+        type: array
+        items:
+          type: object
+          properties:
+            time: 
+              type: string
+            value: 
+              type: string
+            friendly_name_str: 
+              type: string
+  BusynessResponse:
+    type: "object"
+    properties:
+      result:
+        type: "number"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
