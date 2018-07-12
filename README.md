@@ -11,16 +11,47 @@ Quick and dirty API to take data that was dumped by [home-assistant](https://www
 
 Returns a list of devices that you can use to filter by in GET /temperature.
 
+It tries to extract richer information from the friendly name
+based on how we name our sensors. It is quite fragile but 
+will do until we can get more metadata from the sensors.
+
+
 #### Example Response
 
 ```
 {
-	"result":[
-		"Temperature Sensor 1",
-		"Temperature Sensor",
-		"BR Temp",
-		"K Temp"
-	]
+  "result":[
+    {
+      "room":"Invalid Room",
+      "sensor_type":"Invalid Sensor",
+      "unit":"Invalid Unit",
+      "friendly_name":"Temperature Sensor 1"
+    },
+    {
+      "room":"G g g ghost Room",
+      "sensor_type":"Mystery Sensor",
+      "unit":"Phantom Units",
+      "friendly_name":"Temperature Sensor"
+    },
+    {
+      "room":"Board Room",
+      "sensor_type":"Temperature Sensor",
+      "unit":"Degrees Celsius",
+      "friendly_name":"BR Temp"
+    },
+    {
+      "room":"Kitchenette",
+      "sensor_type":"Temperature Sensor",
+      "unit":"Degrees Celsius",
+      "friendly_name":"K Temp"
+    },
+    {
+      "room":"Reception",
+      "sensor_type":"Temperature Sensor",
+      "unit":"Degrees Celsius",
+      "friendly_name":"R Temp"
+    }
+  ]
 }
 ```
 
