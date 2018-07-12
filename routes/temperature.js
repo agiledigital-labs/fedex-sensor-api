@@ -38,13 +38,11 @@ router.get('/', function(req, res, next) {
     whereClauses.push(`time < '${toInfluxTime(to)}'`);
   }
 
-  const query = `
-    SELECT value
+  influx.query(`
+    SELECT value, friendly_name_str
     FROM "home_assistant"."autogen"."°C"
     WHERE ${whereClauses.join(" AND ")}
-  `;
-  console.log(`query: '${query}'`);
-  influx.query(query, {precision: Influx.Precision.Seconds})
+  `)
   .then(function(results) {
       const reducerFn = reducerFns[type] || reducerFns.list;
       res.send({ 
