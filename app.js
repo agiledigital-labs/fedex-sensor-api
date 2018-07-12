@@ -8,7 +8,6 @@ var sassMiddleware = require('node-sass-middleware');
 var cors = require('cors')
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var temperatureRouter = require('./routes/temperature');
 var devicesRouter = require('./routes/devices');
 var busynessRouter = require('./routes/busyness');
@@ -34,7 +33,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/temperature', temperatureRouter);
 app.use('/devices', devicesRouter);
 app.use('/busyness', busynessRouter);
