@@ -5,4 +5,4 @@ const influx = new Influx.InfluxDB({
   database: process.env.INFLUX_DB
 });
 
-return influx;
+module.exports = influx;

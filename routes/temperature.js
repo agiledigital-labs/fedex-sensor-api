@@ -4,17 +4,21 @@ var influx = require('../db/influx');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
+	//time > now() - 1h 
+	//	AND 
+
   influx.query(`
-	SELECT mean("value") AS "mean_value" 
+	SELECT value
 	FROM "home_assistant"."autogen"."°C" 
-	WHERE time > now() - 1h 
-		AND "domain"='sensor'
-	GROUP BY time(10s) 
-	FILL(null)
+	WHERE "domain"='sensor'
   `)
  	.then(function(results) {
-  		next(results);
-  	});
+  	  res.send(results);
+  	})
+  	.catch(err => {
+  	  console.dir(err);
+      next(err);
+    })
 });
 
 module.exports = router;
