@@ -20,9 +20,31 @@ ISO 8601 date that sets the minimum date/time for an event to be returned.
 ##### to  (optional)
 ISO 8601 date that sets the maximum date/time for an event to be returned.
 
-#### Example query:
+#### Example Query
 
 `/temperature?deviceName=K%20Temp&type=average&from=2018-07-12T02:03:19%2B00:00&to=2018-07-12T04:03:19%2B00:00`
+
+#### Example Response
+
+When the `type` query parameter is 'average', 'min' or 'max'
+
+```
+{
+	"result": 20.3333
+}
+```
+
+When the `type` query parameter is 'list' or undefined
+
+```
+{
+	"result":[
+		{"time":"2018-07-12T02:10:56.000Z","value":20.9},
+		{"time":"2018-07-12T02:13:57.000Z","value":20.9},
+		...
+	]
+}
+```
 
 # Setup
 
