@@ -70,9 +70,19 @@ router.get('/', function(req, res, next) {
     .then(motionResults => {
       return influx.query(`
         SELECT distinct("friendly_name_str")
+        FROM "home_assistant"."autogen"."%"
+      `)
+      .then((humidityResult) => motionResults.concat(humidityResult.map(result => ({
+        friendlyName: result.distinct,
+        deviceId: ''
+      }))))
+    })
+    .then(concatenatedResults => {
+      return influx.query(`
+        SELECT distinct("friendly_name_str")
         FROM "home_assistant"."autogen"."°C"
       `)
-      .then((tempResults) => motionResults.concat(tempResults.map(result => ({
+      .then((tempResults) => concatenatedResults.concat(tempResults.map(result => ({
         friendlyName: result.distinct,
         deviceId: ''
       }))))

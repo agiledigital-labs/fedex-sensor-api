@@ -9,6 +9,7 @@ var cors = require('cors')
 
 var indexRouter = require('./routes/index');
 var temperatureRouter = require('./routes/temperature');
+var humidityRouter = require('./routes/humidity');
 var devicesRouter = require('./routes/devices');
 var busynessRouter = require('./routes/busyness');
 
@@ -34,6 +35,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/temperature', temperatureRouter);
+app.use('/humidity', humidityRouter);
 app.use('/devices', devicesRouter);
 app.use('/busyness', busynessRouter);
 

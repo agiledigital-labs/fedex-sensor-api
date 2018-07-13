@@ -67,6 +67,44 @@ paths:
             oneOf:
               -  $ref: "#/definitions/TemperatureAggregrateResponse"
               -  $ref: "#/definitions/TemperatureListResponse"
+  /humidity:
+    get:
+      summary: "Query humidity sensor data"
+      description: ""
+      operationId: "getHumidity"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "deviceName"
+        in: "query"
+        description: "The name of the device to filter by"
+        required: false
+        type: "string"
+      - name: "type"
+        in: "query"
+        description: "The type of response to return"
+        required: false
+        type: "string"
+        enum: ['average', 'min', 'max', 'list']
+      - name: "from"
+        in: "query"
+        description: "The minimum date to include in the response"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "to"
+        in: "query"
+        description: "The minimum date to include in the response"
+        required: false
+        type: "string"
+        format: "date-time"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            oneOf:
+              -  $ref: "#/definitions/HumidityAggregrateResponse"
+              -  $ref: "#/definitions/HumidityListResponse"
            
   /busyness:
     get:
@@ -124,6 +162,26 @@ definitions:
         type: "number"
         format: "int64"
   TemperatureListResponse:
+    type: "object"
+    properties:
+      result:
+        type: array
+        items:
+          type: object
+          properties:
+            time: 
+              type: string
+            value: 
+              type: string
+            friendly_name_str: 
+              type: string
+  HumidityAggregrateResponse:
+    type: "object"
+    properties:
+      result:
+        type: "number"
+        format: "int64"
+  HumidityListResponse:
     type: "object"
     properties:
       result:
