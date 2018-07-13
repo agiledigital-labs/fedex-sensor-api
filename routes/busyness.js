@@ -35,13 +35,17 @@ router.get('/', function(req, res, next) {
   }
 
   influx.query(`
-    SELECT mean("value") AS "mean_value" 
-    FROM "home_assistant"."autogen".${Influx.escape.quoted(deviceId)}
-    WHERE ${whereClauses.join(" AND ")}
+    SELECT mean("max_value") FROM
+      (
+      SELECT max("value") AS "max_value"
+      FROM "home_assistant"."autogen".${Influx.escape.quoted(deviceId)}
+      WHERE ${whereClauses.join(" AND ")}
+      GROUP BY time(5m) FILL(0)
+      )
   `)
   .then(function(result) {
       res.send({ 
-        result: result[0].mean_value
+        result: result[0].mean
       });
     })
     .catch(err => {
