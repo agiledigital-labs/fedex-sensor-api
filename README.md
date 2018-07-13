@@ -123,6 +123,10 @@ ISO 8601 date that sets the maximum date/time for an event to be returned.
 }
 ```
 
+### GET /light
+### GET /motion
+### GET /humidity
+
 # Setup
 
 Create a `.env` at the root of your repo with the following entries (or just define them as environment variables).
