@@ -37,9 +37,10 @@ router.get('/', function(req, res, next) {
   }
 
   influx.query(`
-    SELECT value
-    FROM "home_assistant"."autogen".${Influx.escape.quoted(deviceId)}
-    WHERE ${whereClauses.join(" AND ")}
+      SELECT max("value") AS "value"
+      FROM "home_assistant"."autogen".${Influx.escape.quoted(deviceId)}
+      WHERE ${whereClauses.join(" AND ")}
+      GROUP BY time(5m) FILL(0)
   `)
   .then(function(results) {
     const reducerFn = reducerFns[type] || reducerFns.list;
