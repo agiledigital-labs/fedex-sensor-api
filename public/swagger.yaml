@@ -65,8 +65,8 @@ paths:
           description: "successful operation"
           schema:
             oneOf:
-              -  $ref: "#/definitions/TemperatureAggregrateResponse"
-              -  $ref: "#/definitions/TemperatureListResponse"
+              -  $ref: "#/definitions/AggregrateResponse"
+              -  $ref: "#/definitions/ListResponse"
   /humidity:
     get:
       summary: "Query humidity sensor data"
@@ -103,9 +103,46 @@ paths:
           description: "successful operation"
           schema:
             oneOf:
-              -  $ref: "#/definitions/HumidityAggregrateResponse"
-              -  $ref: "#/definitions/HumidityListResponse"
-           
+              -  $ref: "#/definitions/AggregrateResponse"
+              -  $ref: "#/definitions/ListResponse"
+  /light:
+    get:
+      summary: "Query light sensor data"
+      description: ""
+      operationId: "getLight"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "deviceName"
+        in: "query"
+        description: "The name of the device to filter by"
+        required: false
+        type: "string"
+      - name: "type"
+        in: "query"
+        description: "The type of response to return"
+        required: false
+        type: "string"
+        enum: ['average', 'min', 'max', 'list']
+      - name: "from"
+        in: "query"
+        description: "The minimum date to include in the response"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "to"
+        in: "query"
+        description: "The minimum date to include in the response"
+        required: false
+        type: "string"
+        format: "date-time"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            oneOf:
+              -  $ref: "#/definitions/AggregrateResponse"
+              -  $ref: "#/definitions/ListResponse"
   /busyness:
     get:
       summary: "Query motion sensor data"
@@ -172,8 +209,8 @@ paths:
           description: "successful operation"
           schema:
             oneOf:
-              -  $ref: "#/definitions/MotionAggregrateResponse"
-              -  $ref: "#/definitions/MotionListResponse"
+              -  $ref: "#/definitions/AggregrateResponse"
+              -  $ref: "#/definitions/ListResponse"
 definitions:
   DeviceResponse:
     type: "object"
@@ -193,33 +230,13 @@ definitions:
               type: string
             deviceId: 
               type: string
-  TemperatureAggregrateResponse:
+  AggregrateResponse:
     type: "object"
     properties:
       result:
         type: "number"
         format: "int64"
-  TemperatureListResponse:
-    type: "object"
-    properties:
-      result:
-        type: array
-        items:
-          type: object
-          properties:
-            time: 
-              type: string
-            value: 
-              type: string
-            friendly_name_str: 
-              type: string
-  HumidityAggregrateResponse:
-    type: "object"
-    properties:
-      result:
-        type: "number"
-        format: "int64"
-  HumidityListResponse:
+  ListResponse:
     type: "object"
     properties:
       result:
@@ -238,26 +255,6 @@ definitions:
     properties:
       result:
         type: "number"
-  MotionAggregrateResponse:
-    type: "object"
-    properties:
-      result:
-        type: "number"
-        format: "int64"
-  MotionListResponse:
-    type: "object"
-    properties:
-      result:
-        type: array
-        items:
-          type: object
-          properties:
-            time: 
-              type: string
-            value: 
-              type: string
-            friendly_name_str: 
-              type: string
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"

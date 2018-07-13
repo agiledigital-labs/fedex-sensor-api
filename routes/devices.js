@@ -87,6 +87,16 @@ router.get('/', function(req, res, next) {
         deviceId: ''
       }))))
     })
+    .then(concatenatedResults => {
+      return influx.query(`
+        SELECT distinct("friendly_name_str")
+        FROM "home_assistant"."autogen"."lx"
+      `)
+      .then((tempResults) => concatenatedResults.concat(tempResults.map(result => ({
+        friendlyName: result.distinct,
+        deviceId: ''
+      }))))
+    })
     .then((concatinatedResults) => {
        res.send({ 
          result: concatinatedResults.map(concatinatedResult => 

@@ -13,6 +13,7 @@ var humidityRouter = require('./routes/humidity');
 var devicesRouter = require('./routes/devices');
 var busynessRouter = require('./routes/busyness');
 var motionRouter = require('./routes/motion');
+var lightRouter = require('./routes/light');
 
 var app = express();
 
@@ -40,6 +41,7 @@ app.use('/humidity', humidityRouter);
 app.use('/devices', devicesRouter);
 app.use('/busyness', busynessRouter);
 app.use('/motion', motionRouter);
+app.use('/light', lightRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
