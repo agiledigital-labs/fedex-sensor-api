@@ -136,6 +136,44 @@ paths:
           description: "successful operation"
           schema:
             $ref: "#/definitions/BusynessResponse"
+  /motion:
+    get:
+      summary: "Motion sensor data"
+      description: ""
+      operationId: "getMotion"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "deviceId"
+        in: "query"
+        description: "The ID of the device to filter by"
+        required: false
+        type: "string"
+      - name: "from"
+        in: "query"
+        description: "The minimum date to include in the response"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "to"
+        in: "query"
+        description: "The minimum date to include in the response"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "type"
+        in: "query"
+        description: "The type of response to return"
+        required: false
+        type: "string"
+        enum: ['average', 'min', 'max', 'list']
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            oneOf:
+              -  $ref: "#/definitions/MotionAggregrateResponse"
+              -  $ref: "#/definitions/MotionListResponse"
 definitions:
   DeviceResponse:
     type: "object"
@@ -200,6 +238,26 @@ definitions:
     properties:
       result:
         type: "number"
+  MotionAggregrateResponse:
+    type: "object"
+    properties:
+      result:
+        type: "number"
+        format: "int64"
+  MotionListResponse:
+    type: "object"
+    properties:
+      result:
+        type: array
+        items:
+          type: object
+          properties:
+            time: 
+              type: string
+            value: 
+              type: string
+            friendly_name_str: 
+              type: string
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"
